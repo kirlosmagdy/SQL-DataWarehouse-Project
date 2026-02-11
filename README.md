@@ -1,226 +1,121 @@
 # 🏢 Enterprise Data Warehouse Project
 
-[![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?style=flat\&logo=microsoft-sql-server\&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
-[![T-SQL](https://img.shields.io/badge/T--SQL-Advanced-003B57?style=flat\&logo=database\&logoColor=white)](https://docs.microsoft.com/en-us/sql/t-sql/)
-[![Architecture](https://img.shields.io/badge/Architecture-Medallion%20\(Bronze/Silver/Gold\)-FF6F00?style=flat)]()
-[![Data Model](https://img.shields.io/badge/Data%20Model-Star%20Schema-blueviolet?style=flat)]()
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?style=flat&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
+[![T-SQL](https://img.shields.io/badge/T--SQL-Advanced-003B57?style=flat&logo=database&logoColor=white)](https://docs.microsoft.com/en-us/sql/t-sql/)
+[![Medallion Architecture](https://img.shields.io/badge/Architecture-Medallion%20(Bronze/Silver/Gold)-FF6F00?style=flat)]()
+[![ETL](https://img.shields.io/badge/ETL-Stored%20Procedures-00C853?style=flat)]()
+[![Star Schema](https://img.shields.io/badge/Data%20Model-Star%20Schema-blueviolet?style=flat)]()
 
-> A production-ready SQL Server Data Warehouse implementing the **Medallion Architecture (Bronze → Silver → Gold)** with automated ETL pipelines, data quality framework, dimensional modeling, and business-ready analytics.
-
----
-
-## 📌 Project Overview
-
-This project demonstrates the end-to-end design and implementation of an **Enterprise Data Warehouse** that integrates data from multiple operational systems (CRM & ERP) and transforms raw data into analytical insights.
-
-The solution follows industry best practices in:
-
-* Data Engineering
-* Dimensional Modeling (Kimball Methodology)
-* Data Quality Management
-* ETL Pipeline Design
-* Analytical Reporting
+&gt; **A production-grade data warehouse implementing the Medallion Architecture (Bronze-Silver-Gold) with automated ETL pipelines, data quality frameworks, and comprehensive business intelligence reporting.**
 
 ---
 
-## 🏗 Architecture
+## 📋 Table of Contents
 
-The warehouse follows the **Medallion Architecture pattern**, organizing data into three logical layers:
-
-### 🥉 Bronze Layer – Raw Data
-
-* Stores raw data exactly as received from source systems
-* No transformations applied
-* Full load using `BULK INSERT`
-* Preserves historical data
-
-### 🥈 Silver Layer – Cleansed & Standardized
-
-* Data cleaning and validation
-* Deduplication using `ROW_NUMBER()`
-* Standardization of codes (Gender, Marital Status, Country, Product Line)
-* Date conversions and validation
-* Derived columns and enrichment logic
-
-### 🥇 Gold Layer – Business-Ready Model
-
-* Star Schema design
-* Conformed dimensions
-* Fact table at order-line grain
-* Analytical views for reporting
-* SCD Type 2 handling for product dimension
+- [Project Overview](#-project-overview)
+- [Architecture Overview](#-architecture-overview)
+- [Data Architecture](#-data-architecture)
+- [Data Flow & Integration](#-data-flow--integration)
+- [Database Layers](#-database-layers)
+- [Data Model](#-data-model)
+- [ETL Pipeline](#-etl-pipeline)
+- [Data Quality & Transformation](#-data-quality--transformation)
+- [Business Intelligence & Reporting](#-business-intelligence--reporting)
+- [Data Catalog](#-data-catalog)
+- [Technologies Used](#-technologies-used)
+- [Getting Started](#-getting-started)
+- [Project Structure](#-project-structure)
+- [Key Features](#-key-features)
+- [Future Enhancements](#-future-enhancements)
+- [Author](#-author)
 
 ---
 
-## 🔄 Data Sources
+## 🎯 Project Overview
 
-The warehouse integrates data from two systems:
+This project demonstrates a complete **enterprise data warehouse solution** built on SQL Server using industry best practices. It implements a **Medallion Architecture** (Bronze-Silver-Gold) to progressively transform raw operational data from multiple source systems (CRM & ERP) into actionable business intelligence.
 
-### CRM System
-
-* `crm_cust_info` – Customer demographics
-* `crm_prd_info` – Product master data
-* `crm_sales_details` – Sales transactions
-
-### ERP System
-
-* `erp_cust_az12` – Additional customer attributes
-* `erp_loc_a101` – Customer location data
-* `erp_px_cat_g1v2` – Product category hierarchy
+**Key Capabilities:**
+- ✅ **Multi-Source Data Integration**: Consolidates data from CRM (Customer Relationship Management) and ERP (Enterprise Resource Planning) systems
+- ✅ **Automated ETL Pipelines**: Stored procedures with comprehensive logging, error handling, and performance monitoring
+- ✅ **Data Quality Framework**: Cleansing, standardization, deduplication, and validation at each layer
+- ✅ **Dimensional Modeling**: Star Schema optimized for analytical workloads
+- ✅ **Advanced Analytics**: Customer segmentation, product performance analysis, and trend identification
+- ✅ **Business-Ready Reports**: Pre-built views for Customer and Product analytics
 
 ---
 
-## 📊 Data Model (Star Schema)
+## 🏗️ Architecture Overview
 
-### Dimensions
+### Medallion Architecture Pattern
 
-#### `gold.dim_customers`
-
-* Surrogate Key
-* Customer ID & Business Number
-* Name, Gender, Marital Status
-* Country
-* Birthdate
-* Create Date
-
-#### `gold.dim_products` (SCD Type 2)
-
-* Surrogate Key
-* Product ID & Number
-* Category & Subcategory
-* Product Line
-* Maintenance Flag
-* Cost
-* Effective Start Date
-
-### Fact Table
-
-#### `gold.fact_sales`
-
-* Order Number
-* Product Key (FK)
-* Customer Key (FK)
-* Order Date
-* Shipping Date
-* Due Date
-* Sales Amount
-* Quantity
-* Price
-
-**Grain:** One row per order line item
+The warehouse follows the **Medallion Architecture**, a modern data engineering pattern that organizes data into three distinct layers, each with increasing levels of quality and business readiness:
 
 ---
 
-## ⚙ ETL Pipeline
+## 🏛️ Data Architecture
 
-Two main stored procedures power the ETL process:
+### System Architecture Diagram
 
-### `bronze.load_bronze`
+![Data Architecture](docs/data_architecture.png)
 
-* Truncate & load pattern
-* `BULK INSERT` from CSV
-* Execution logging
-* TRY/CATCH error handling
+**Architecture Components:**
 
-### `silver.load_silver`
-
-* Data cleansing & transformation
-* Deduplication logic
-* Data standardization
-* Window functions (`LEAD`, `ROW_NUMBER`)
-* Business rule enforcement
+| Layer | Purpose | Object Type | Transformations | Data Model |
+|-------|---------|-------------|-----------------|------------|
+| **Bronze** | Landing zone for raw data | Tables | None (as-is) | None |
+| **Silver** | Cleansed and standardized data | Tables | Data cleansing, standardization, normalization, derived columns, data enrichment | None |
+| **Gold** | Business-ready analytics | Views | Data integration, aggregations, business logic | Star Schema |
 
 ---
 
-## 🔎 Data Quality Framework
+## 🔄 Data Flow & Integration
 
-The project applies structured data quality controls:
+### Source System Integration
 
-* **Completeness:** NULL handling and default values
-* **Consistency:** Standardized codes and mappings
-* **Validity:** Date validation and range checks
-* **Uniqueness:** Duplicate removal strategy
-* **Accuracy:** Sales recalculation (Quantity × Price)
+The warehouse integrates data from two operational systems:
 
----
+![Data Integration](docs/data_integration.png)
 
-## 📈 Analytics & Reporting
+#### CRM (Customer Relationship Management) System
+| Source Table | Description | Records |
+|--------------|-------------|---------|
+| `crm_cust_info` | Customer demographic information | Customer profiles |
+| `crm_prd_info` | Product definitions and historical costs | Product master data |
+| `crm_sales_details` | Transactional sales records at order line level | Sales transactions |
 
-### Customer Report (`gold.report_customers`)
+#### ERP (Enterprise Resource Planning) System
+| Source Table | Description | Records |
+|--------------|-------------|---------|
+| `erp_cust_az12` | Additional customer PII (birthdate, gender) | Customer attributes |
+| `erp_loc_a101` | Customer geographic location and country mapping | Location data |
+| `erp_px_cat_g1v2` | Product categorization hierarchy and maintenance flags | Product classification |
 
-* Customer Segmentation (VIP / Regular / New)
-* Total Sales & Orders
-* Average Order Value (AOV)
-* Customer Lifespan & Recency
-* Age Groups
+### Data Flow Diagram
 
-### Product Report (`gold.report_products`)
+![Data Flow](docs/data_flow.png)
 
-* Product Performance Segmentation
-* Revenue by Product
-* Average Selling Price
-* Monthly Revenue Metrics
-
-### Exploratory Data Analysis
-
-* Revenue by category
-* Top/Bottom customers
-* Top/Bottom products
-* Sales distribution by country
+**Integration Logic:**
+- **Customer Data**: Merged from `crm_cust_info` + `erp_cust_az12` + `erp_loc_a101`
+- **Product Data**: Merged from `crm_prd_info` + `erp_px_cat_g1v2`
+- **Sales Data**: Linked to dimensions via `product_key` and `customer_key`
 
 ---
 
-## 🛠 Technologies Used
+## 🗄️ Database Layers
 
-* Microsoft SQL Server 2019+
-* T-SQL
-* SQL Server Management Studio (SSMS)
-* Medallion Architecture
-* Star Schema Modeling
-* SCD Type 2 Implementation
+### 1. Bronze Layer (Raw Data)
 
----
+**Purpose**: Landing zone for raw, unmodified data from source systems.
 
-## 🚀 How to Run the Project
+**Tables Created:**
+```sql
+-- CRM Tables
+bronze.crm_cust_info      -- Customer demographics
+bronze.crm_prd_info       -- Product information
+bronze.crm_sales_details  -- Sales transactions
 
-1. Create Database and Schemas
-2. Run Bronze DDL scripts
-3. Execute `bronze.load_bronze`
-4. Run Silver DDL scripts
-5. Execute `silver.load_silver`
-6. Create Gold Views
-7. Query analytics views
-
----
-
-## ⭐ Key Highlights
-
-* End-to-end Data Warehouse implementation
-* Multi-source data integration
-* Production-style ETL with logging
-* Advanced SQL techniques (CTEs, Window Functions)
-* Business-ready analytical reporting
-* Clean separation of data layers
-
----
-
-## 🔮 Future Improvements
-
-* Incremental loading (CDC)
-* Power BI dashboards
-* Index & performance optimization
-* Partitioning strategy
-* Cloud migration (Azure / Synapse)
-
----
-
-## 👨‍💻 Author
-
-**Kirolos Magdy**
-SQL Developer | Data Engineer | BI Specialist
-
-GitHub: [https://github.com/kirlosmagdy](https://github.com/kirlosmagdy)
-
----
-
-> "Turning raw operational data into strategic business intelligence using modern data engineering practices."
+-- ERP Tables
+bronze.erp_cust_az12      -- Customer birthdate/gender
+bronze.erp_loc_a101       -- Customer location/country
+bronze.erp_px_cat_g1v2    -- Product categories
