@@ -159,3 +159,213 @@ The project integrates data from two primary sources:
 ---
 
 ## 📂 Project Structure
+```
+SQL-DataWarehouse-Project/
+│
+├── 📁 datasets/                    # Source data files
+│   ├── crm_sales_details.csv
+│   ├── crm_cust_info.csv
+│   ├── crm_prd_info.csv
+│   ├── erp_cust_az12.csv
+│   ├── erp_loc_a101.csv
+│   └── erp_px_cat_g1v2.csv
+│
+├── 📁 docs/                        # Documentation & diagrams
+│   ├── data_architecture.drawio
+│   ├── data_flow.drawio
+│   ├── data_models.drawio
+│   ├── etl.drawio
+│   ├── data_catalog.md
+│   ├── naming-conventions.md
+│   └── requirements.md
+│
+├── 📁 scripts/                     # SQL scripts organized by layer
+│   ├── 📁 bronze/                  # Raw data ingestion scripts
+│   │   ├── create_tables.sql
+│   │   └── load_data.sql
+│   │
+│   ├── 📁 silver/                  # Data cleansing & transformation
+│   │   ├── clean_customers.sql
+│   │   ├── clean_products.sql
+│   │   └── clean_sales.sql
+│   │
+│   └── 📁 gold/                    # Star schema & analytics
+│       ├── dim_customers.sql
+│       ├── dim_products.sql
+│       ├── fact_sales.sql
+│       └── analytics_queries.sql
+│
+├── 📁 tests/                       # Data quality tests
+│   └── quality_checks.sql
+│
+├── 📄 README.md
+├── 📄 LICENSE
+├── 📄 .gitignore
+└── 📄 requirements.txt
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **SQL Server Express** (Free) - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- **SQL Server Management Studio (SSMS)** - [Download](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)
+- **Git** - [Download](https://git-scm.com/downloads)
+
+### Installation
+
+1. **Clone the Repository**
+```bash
+   git clone https://github.com/kirlosmagdy/SQL-DataWarehouse-Project.git
+   cd SQL-DataWarehouse-Project
+```
+
+2. **Setup SQL Server Database**
+```sql
+   -- Create database
+   CREATE DATABASE SalesDataWarehouse;
+   GO
+```
+
+3. **Execute Scripts in Order**
+   - Run Bronze layer scripts first
+   - Then Silver layer scripts
+   - Finally Gold layer scripts
+
+4. **Load Sample Data**
+   - Import CSV files from `datasets/` folder
+   - Execute data loading stored procedures
+
+### Quick Start Guide
+
+Detailed setup instructions available in [Installation Guide](docs/installation.md)
+
+---
+
+## 📊 Analytics & Insights
+
+### Sample Business Questions Answered
+
+1. **Customer Analysis**
+   - Who are our top customers by revenue?
+   - What is the customer lifetime value distribution?
+   - Which demographic segments generate the most sales?
+
+2. **Product Performance**
+   - What are the best-selling products?
+   - Which product categories drive revenue?
+   - How do maintenance costs impact profitability?
+
+3. **Sales Trends**
+   - What are monthly/quarterly sales trends?
+   - Which time periods show peak performance?
+   - What is the average order value over time?
+
+### Example Analytics Query
+```sql
+-- Top 10 Products by Revenue
+SELECT TOP 10
+    p.product_name,
+    p.category,
+    SUM(f.sales_amount) AS total_revenue,
+    SUM(f.quantity) AS units_sold,
+    AVG(f.price) AS avg_price
+FROM gold.fact_sales f
+JOIN gold.dim_products p ON f.product_key = p.product_key
+GROUP BY p.product_name, p.category
+ORDER BY total_revenue DESC;
+```
+
+---
+
+## 🛠️ Technologies
+
+| Technology | Purpose |
+|------------|---------|
+| **SQL Server Express** | Database engine |
+| **T-SQL** | Query language & stored procedures |
+| **SSMS** | Database management |
+| **Draw.io** | Architecture diagrams |
+| **Git/GitHub** | Version control |
+
+---
+
+## 📚 Documentation
+
+- [**Data Catalog**](docs/data_catalog.md) - Complete data dictionary
+- [**Naming Conventions**](docs/naming-conventions.md) - Coding standards
+- [**Requirements**](docs/requirements.md) - Business & technical requirements
+- [**ETL Documentation**](docs/etl.drawio) - ETL process diagrams
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+You are free to use, modify, and distribute this project with proper attribution.
+
+---
+
+## 🌟 About the Author
+
+**Kirlos Magdy** | Data Engineering Enthusiast
+
+Passionate about transforming raw data into actionable insights and building scalable data solutions.
+
+---
+
+## 📫 Connect With Me
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](YOUR_LINKEDIN_URL)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kirlosmagdy)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:YOUR_EMAIL)
+
+---
+
+## 🎓 Learning Resources
+
+### Free Courses
+
+All courses and materials are completely **FREE**! Your support through subscribing, liking, and commenting is greatly appreciated.
+
+- ✅ **SQL Full Course** - [Watch Now](COURSE_LINK) | [Materials](MATERIALS_LINK)
+- ✅ **Tableau Full Course** - [Watch Now](COURSE_LINK) | [Materials](MATERIALS_LINK)
+- ✅ **SQL Data Warehouse Project** - [Watch Now](COURSE_LINK) | [Repo](REPO_LINK)
+- ✅ **SQL Exploratory Data Analysis** - [Watch Now](COURSE_LINK) | [Materials](MATERIALS_LINK)
+- ✅ **Advanced SQL Analytics** - [Watch Now](COURSE_LINK) | [Materials](MATERIALS_LINK)
+
+---
+
+## ⭐ Show Your Support
+
+If you found this project helpful, please consider:
+
+- ⭐ Starring the repository
+- 🐛 Reporting bugs or issues
+- 💡 Suggesting new features
+- 📢 Sharing with others
+
+---
+
+<div align="center">
+
+**Made with ❤️ for the Data Community**
+
+[⬆ Back to Top](#-sql-data-warehouse--analytics-project)
+
+</div>
