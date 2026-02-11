@@ -1,162 +1,155 @@
 # SQL Data Warehouse Project
 
-> Building a modern **Data Warehouse** with **SQL Server**, including **ETL processes**, **data modeling**, and **analytics**.
+## 📌 Project Overview
+
+This project demonstrates the design and implementation of a **SQL-based Data Warehouse** built to support analytical reporting and business intelligence needs. The solution transforms raw operational data into a structured, analytics-ready format and delivers meaningful business insights through SQL queries and reports.
+
+The project covers:
+
+* Data warehouse design (schema modeling)
+* ETL process implementation
+* Data transformation and cleaning
+* Analytical SQL queries
+* Business-focused reporting (Customers & Products reports)
 
 ---
 
-## 🧠 Project Overview
+## 🏗️ Architecture
 
-This repository contains a complete end-to-end **SQL Server Data Warehouse** implementation. The project demonstrates how to design, build, and analyze a modern data warehouse using industry best practices such as **Medallion Architecture**, **ETL pipelines**, and **dimensional modeling**.
+The data warehouse follows a **dimensional modeling approach (Star Schema)** to optimize analytical query performance and reporting clarity.
 
-The goal is to transform raw operational data into business-ready analytical datasets that support reporting and decision-making.
+### Core Components:
 
----
+* **Fact Table(s)** – Store measurable business events (e.g., sales transactions).
+* **Dimension Tables** – Provide descriptive context (e.g., customers, products, dates).
 
-## 🛠️ Project Objectives
+This structure enables:
 
-✔ Design and implement a layered Data Warehouse (Bronze → Silver → Gold)
-
-✔ Build automated ETL pipelines using SQL
-
-✔ Apply data cleaning and transformation logic
-
-✔ Create fact and dimension tables using Star Schema
-
-✔ Perform analytical queries for business insights
+* Fast aggregations
+* Simplified reporting queries
+* Clear separation between transactional and analytical workloads
 
 ---
 
-## 🎯 Why This Project
+## 🔄 ETL Process
 
-Modern organizations rely on clean, structured data for analytics. This project simulates a real-world scenario where data is extracted from multiple sources, transformed, and loaded into a centralized warehouse optimized for analysis.
+The ETL (Extract, Transform, Load) process includes:
 
-It showcases practical Data Engineering concepts including:
+1. **Extract** – Importing raw data from source systems.
+2. **Transform** – Cleaning, validating, and reshaping data.
 
-* Data ingestion
-* Data cleansing
-* Dimensional modeling
-* Analytical querying
+   * Handling missing values
+   * Standardizing formats
+   * Deriving calculated columns
+3. **Load** – Inserting transformed data into fact and dimension tables.
+
+The ETL logic ensures data consistency, integrity, and readiness for analysis.
 
 ---
 
-## 📦 Project Structure
+## 📊 Exploratory Data Analysis (EDA)
+
+The project includes exploratory SQL queries to:
+
+* Analyze overall sales performance
+* Identify revenue trends
+* Detect top-performing products
+* Evaluate customer purchasing behavior
+* Calculate key business KPIs
+
+These queries help validate data quality and uncover insights before formal reporting.
+
+---
+
+## 📈 Reports Included
+
+### 1️⃣ Customers Report
+
+The Customers Report provides business insights such as:
+
+* Total customers
+* Customer segmentation
+* Revenue per customer
+* Top customers by revenue
+* Purchase frequency
+* Lifetime value indicators
+
+This report supports marketing strategies and customer retention decisions.
+
+---
+
+### 2️⃣ Products Report
+
+The Products Report analyzes product performance including:
+
+* Total sales per product
+* Revenue contribution
+* Best-selling products
+* Underperforming products
+* Category-level analysis
+
+This helps with inventory planning, pricing strategy, and product optimization.
+
+---
+
+## 🛠️ Technologies Used
+
+* **SQL (T-SQL)**
+* Relational Database Management System
+* Dimensional Modeling (Star Schema)
+* Data Warehousing Concepts
+
+---
+
+## 📁 Repository Structure
 
 ```
 SQL-DataWarehouse-Project/
 │
-├── docs/          # Architecture diagrams and documentation
-├── scripts/       # SQL ETL scripts
-│   ├── bronze/    # Raw data ingestion
-│   ├── silver/    # Cleaned and standardized data
-│   └── gold/      # Fact & dimension tables
-├── data/          # Source CSV files
-├── test/          # Validation queries
+├── Exploratory Data Analysis.sql
+├── Customers Report.sql
+├── Products Report.sql
 └── README.md
 ```
 
 ---
 
-## 🧱 Architecture
+## 🎯 Business Value
 
-This project follows a Medallion Architecture approach:
+This project demonstrates:
 
-### 🥉 Bronze Layer
-
-Stores raw source data with minimal transformation.
-
-### 🥈 Silver Layer
-
-Contains cleaned, standardized, and validated data.
-
-### 🥇 Gold Layer
-
-Business-ready tables modeled using a Star Schema for analytics.
+* Strong SQL querying skills
+* Data modeling expertise
+* Analytical thinking
+* Ability to translate business requirements into data solutions
+* End-to-end data warehouse implementation
 
 ---
 
-## 🚀 Getting Started
+## 🚀 How to Use
 
-### Prerequisites
-
-* Windows OS
-* SQL Server (Express / Developer / Full)
-* SQL Server Management Studio (SSMS)
-* Basic SQL knowledge
+1. Create the database and schema.
+2. Run ETL scripts to populate dimension and fact tables.
+3. Execute analytical and reporting SQL files.
+4. Use results for dashboards or business reporting.
 
 ---
 
-## ▶ How to Run
+## 📌 Future Improvements
 
-1. Clone the repository:
-
-```
-git clone https://github.com/kirlosmagdy/SQL-DataWarehouse-Project.git
-```
-
-2. Create a new database in SQL Server.
-
-3. Execute SQL scripts in order:
-
-* Bronze layer scripts
-* Silver layer scripts
-* Gold layer scripts
-
-4. Run analytics queries to explore insights.
+* Integration with Power BI / Tableau dashboards
+* Automated ETL scheduling
+* Index optimization for performance
+* Incremental data loading
+* Data quality validation framework
 
 ---
 
-## 📊 Analytics
+## 👨‍💻 Author
 
-After building the warehouse, you can analyze:
-
-* Sales performance
-* Customer behavior
-* Product trends
-* Business KPIs
-
-All analytics are performed using SQL queries.
+**Kirolos Magdy**
+SQL Developer | Data Analyst | Data Engineering Enthusiast
 
 ---
 
-## 🧰 Technologies Used
-
-* Microsoft SQL Server
-* T-SQL
-* Star Schema Modeling
-* ETL via SQL
-* Git & GitHub
-
----
-
-## 🧠 Skills Demonstrated
-
-* Data Warehousing
-* ETL Development
-* SQL Optimization
-* Dimensional Modeling
-* Analytical Querying
-* Data Engineering Best Practices
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome. Feel free to fork the repository, open issues, or submit pull requests.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
-
----
-
-## 📬 Contact
-
-Kirlos Magdy
-
-GitHub: [https://github.com/kirlosmagdy](https://github.com/kirlosmagdy)
-
----
-
-⭐ If you found this project helpful, feel free to give it a star!
+If you would like to collaborate or discuss the project, feel free to connect!
