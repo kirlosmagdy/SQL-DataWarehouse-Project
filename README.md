@@ -225,3 +225,15 @@ Data Engineer | SQL Developer
 ---
 
 ⭐ If you found this project useful, consider giving it a star!
+
+
+
+
+👤 Author
+
+Kirolos Magdy
+Data Engineer | SQL Developer
+
+📧 Email: kirolosmagdy242@gmail.com
+🔗 LinkedIn: https://www.linkedin.com/in/kirolos-magdy1/
+
