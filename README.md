@@ -119,3 +119,30 @@ bronze.crm_sales_details  -- Sales transactions
 bronze.erp_cust_az12      -- Customer birthdate/gender
 bronze.erp_loc_a101       -- Customer location/country
 bronze.erp_px_cat_g1v2    -- Product categories
+
+
+2. Silver Layer (Cleansed Data)
+Purpose: Standardized, deduplicated, and validated data.
+
+
+| Table                      | Transformations                                                                                                                                                                                          |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `silver.crm_cust_info`     | • Trimming whitespace from names<br>• Standardizing marital status (S→Single, M→Married)<br>• Standardizing gender (F→Female, M→Male)<br>• Deduplication using ROW\_NUMBER()                             |
+| `silver.crm_prd_info`      | • Parsing product key into category\_id<br>• Standardizing product line codes (M→Mountain, R→Road, etc.)<br>• Handling NULL costs (default to 0)<br>• Calculating end dates using LEAD() window function |
+| `silver.crm_sales_details` | • Converting integer dates to DATE format<br>• Validating date formats (YYYYMMDD)<br>• Recalculating sales amounts (quantity × price)<br>• Handling NULL/invalid prices                                  |
+| `silver.erp_cust_az12`     | • Removing 'NAS' prefix from customer IDs<br>• Validating birthdates (future dates → NULL)<br>• Standardizing gender values                                                                              |
+| `silver.erp_loc_a101`      | • Removing dashes from customer IDs<br>• Standardizing country codes (DE→Germany, US/USA→United States)                                                                                                  |
+| `silver.erp_px_cat_g1v2`   | • Direct pass-through with data type validation                                                                                                                                                          |
+
+
+
+3. Gold Layer (Business Views)
+Purpose: Dimensional model for analytics and reporting.
+Views Created:
+gold.dim_customers - Conformed customer dimension
+gold.dim_products - Slowly Changing Product dimension (Type 2)
+gold.fact_sales - Transactional fact table
+gold.report_customers - Customer analytics report
+gold.report_products - Product analytics report
+
+
