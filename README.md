@@ -1,10 +1,161 @@
-🚀 Modern Data Warehouse & Analytics SolutionEnd-to-End Data Engineering Portfolio: From Raw Data to Actionable Insights📌 Project OverviewThis project demonstrates a comprehensive data warehousing solution designed to transform fragmented raw data from ERP and CRM systems into a structured, high-performance analytical engine. By implementing the Medallion Architecture, this solution ensures data quality and provides a "Single Source of Truth" for business intelligence.The Goal: Empower stakeholders with deep insights into customer behavior, product performance, and sales trends through a scalable and robust data pipeline.🏗️ Data ArchitectureThe project leverages a modern Medallion Architecture to maintain a clean, traceable, and reliable data flow from source to consumption.Figure 1: Full Data Architecture Overview🥉 Bronze Layer (Raw)Source: Data is ingested as-is from CRM and ERP source systems provided as CSV files.Loading: Utilizes batch processing via a Full Load (Truncate & Insert) strategy managed by stored procedures.Purpose: Maintains the original state of data for auditability and historical reference.🥈 Silver Layer (Cleaned)Process: Performs data cleansing, standardization, and normalization.Transformations: Includes handling null values, correcting data types, and data enrichment.Purpose: Provides a reliable foundation of high-quality data for cross-departmental analysis.🥇 Gold Layer (Analytical)Structure: Houses business-ready data modeled into a high-performance Star Schema.Implementation: Utilizes SQL Views to perform data integrations, aggregations, and apply business logic.Purpose: Optimized for reporting, ad-hoc SQL queries, and machine learning applications.🔗 Data Integration & FlowThe pipeline integrates transactional records and customer information from two distinct sources to create a unified view of the business.Figure 2: Integration between CRM and ERP source systemsThe following diagram illustrates the specific movement of table objects through the Medallion layers:Figure 3: Object-level Data Flow through Bronze, Silver, and Gold📊 Data Modeling (Star Schema)To optimize query performance and usability, the Gold Layer is organized into a Star Schema consisting of centralized fact tables and descriptive dimension tables.Figure 4: Dimensional Data ModelFact Table: gold.fact_sales captures all transactional data, including the core sales calculation:$$Sales = Quantity \times price$$Dimension Tables: gold.dim_customers and gold.dim_products provide descriptive attributes (e.g., demographics, categories, and maintenance status) to enable multi-dimensional analysis.💡 Analytics & Business InsightsThe "Gold" data provides the foundation for advanced SQL-based reporting:Customer Behavior: Insights into demographics, marital status, and geographic distribution.Product Performance: Analysis of top-performing categories, subcategories, and product lines.Sales Trends: Strategic tracking of revenue and quantity metrics over time.🛠️ Tech Stack & ToolsDatabase: Microsoft SQL Server ExpressManagement: SQL Server Management Studio (SSMS)Modeling/Diagramming: Draw.ioVersion Control: Git & GitHubDocumentation: Notion & Markdown📂 Repository StructureBash├── datasets/           # Raw ERP & CRM CSV files
-├── docs/               # Architecture diagrams & Data Catalog
-├── scripts/            # SQL Scripts organized by layer
-│   ├── bronze/         # DDL & Load scripts (Raw Data)
-│   ├── silver/         # Transformation & Cleaning scripts
-│   └── gold/           # Analytical Models (Views & Star Schema)
-├── tests/              # Data Quality & Validation checks
-└── README.md
-🚀 How to Get StartedClone the Repository:Bashgit clone https://github.com/kirlosmagdy/SQL-DataWarehouse-Project.git
-Environment Setup: Ensure you have SQL Server and SSMS installed.Execute Scripts: Run the SQL scripts in the following order: Bronze ➔ Silver ➔ Gold.Explore Data: Use the provided analytical queries in the Gold directory to generate insights.🤝 AcknowledgmentsSpecial thanks to Baraa Khatib Salkini (Data With Baraa) for providing the foundational guidance and project roadmap that inspired this implementation.📬 Let's Connect!Kirlos Magdy LinkedIn | GitHubWould you like me to help you draft the data_catalog.md file to further define the specific columns and data types shown in your model?
+# 🏢 SQL Data Warehouse & Analytics Project
+
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Data Engineering](https://img.shields.io/badge/Data-Engineering-blue?style=for-the-badge)](https://github.com/kirlosmagdy/SQL-DataWarehouse-Project)
+
+> A comprehensive end-to-end data warehousing solution implementing modern Medallion Architecture with ETL pipelines, dimensional modeling, and advanced analytics using SQL Server.
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Key Features](#-key-features)
+- [Data Model](#-data-model)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Analytics & Insights](#-analytics--insights)
+- [Technologies](#-technologies)
+- [Documentation](#-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Connect With Me](#-connect-with-me)
+
+---
+
+## 🎯 Overview
+
+This project demonstrates **enterprise-grade data warehousing** practices, showcasing the complete lifecycle from raw data ingestion to actionable business insights. Built on **SQL Server**, it implements the modern **Medallion Architecture** (Bronze-Silver-Gold layers) to transform disparate data sources into a unified analytical platform.
+
+### 🎓 What You'll Learn
+
+- Modern data warehouse architecture design
+- ETL pipeline development and optimization
+- Dimensional modeling (Star Schema)
+- Data quality and cleansing techniques
+- SQL-based analytics and reporting
+- Best practices in data engineering
+
+### 💼 Perfect For
+
+- **Data Engineers** looking to showcase ETL expertise
+- **Data Analysts** seeking to understand warehouse architecture
+- **Students** building their data engineering portfolio
+- **Professionals** transitioning into data roles
+
+---
+
+## 🏗️ Architecture
+
+The project implements a **three-tier Medallion Architecture** for progressive data refinement:
+
+![Data Architecture](docs/images/architecture.png)
+
+### 📊 Architecture Layers
+
+#### 🥉 **Bronze Layer** - Raw Data Ingestion
+- **Purpose**: Store raw, unprocessed data as-is from source systems
+- **Sources**: ERP and CRM CSV files
+- **Process**: Batch processing with full load capabilities
+- **Data Model**: None (as-is storage)
+- **Technology**: SQL Server Tables with Stored Procedures
+
+#### 🥈 **Silver Layer** - Data Cleansing & Transformation
+- **Purpose**: Clean, standardize, and normalize data
+- **Transformations**:
+  - Data cleansing and validation
+  - Standardization of formats
+  - Data normalization
+  - Derived column creation
+  - Data enrichment
+- **Data Model**: Normalized tables
+- **Quality**: Enterprise-ready, consistent data
+
+#### 🥇 **Gold Layer** - Business-Ready Analytics
+- **Purpose**: Aggregated, business-ready data for reporting
+- **Transformations**:
+  - Data integration from multiple sources
+  - Business logic application
+  - Aggregations and calculations
+- **Data Model**: **Star Schema** (Fact & Dimension tables)
+- **Consumption**: BI tools, reports, and ad-hoc queries
+
+### 🔄 Data Flow
+
+![Data Flow Diagram](docs/images/dataflow.png)
+
+**Sources** → **Bronze** (Raw) → **Silver** (Cleaned) → **Gold** (Modeled) → **Analytics**
+
+---
+
+## ✨ Key Features
+
+### 🔧 Technical Implementation
+
+- ✅ **Medallion Architecture** - Industry-standard three-layer approach
+- ✅ **ETL Pipelines** - Automated data extraction, transformation, and loading
+- ✅ **Star Schema Design** - Optimized for analytical queries
+- ✅ **Data Quality Framework** - Comprehensive cleansing and validation
+- ✅ **Stored Procedures** - Reusable, maintainable SQL logic
+- ✅ **Version Control** - Git-based code management
+- ✅ **Documentation** - Detailed data catalog and architecture diagrams
+
+### 📈 Analytics Capabilities
+
+- 📊 Customer behavior analysis
+- 📦 Product performance tracking
+- 💰 Sales trend analysis
+- 🎯 KPI dashboards
+- 🔍 Ad-hoc analytical queries
+
+---
+
+## 🗂️ Data Model
+
+### Source Systems
+
+![Source Systems](docs/images/sources.png)
+
+The project integrates data from two primary sources:
+
+- **CRM System**: Customer relationships, sales transactions, and product information
+- **ERP System**: Product categories, customer demographics, and location data
+
+### Star Schema Design
+
+![Star Schema](docs/images/star_schema.png)
+
+#### 📋 Fact Table
+
+**`gold.fact_sales`**
+- `order_number` (PK)
+- `product_key` (FK)
+- `customer_key` (FK)
+- `order_date`
+- `shipping_date`
+- `due_date`
+- `sales_amount` (Quantity × Price)
+- `quantity`
+- `price`
+
+#### 📐 Dimension Tables
+
+**`gold.dim_customers`**
+- Customer demographics
+- Marital status
+- Gender
+- Birthdate
+- Country
+
+**`gold.dim_products`**
+- Product information
+- Category hierarchy
+- Maintenance requirements
+- Cost and pricing
+- Product line details
+
+---
+
+## 📂 Project Structure
