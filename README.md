@@ -196,17 +196,6 @@ These analyses demonstrate how the Gold layer enables **strategic business decis
 
 ---
 
-## 🛠 Technologies Used
-
-* Microsoft SQL Server 2019+
-* T-SQL (Advanced Queries & Window Functions)
-* Stored Procedures
-* Medallion Architecture
-* Star Schema Modeling
-* Dimensional Modeling Concepts (SCD Type 2)
-
----
-
 ## 🚀 Getting Started
 
 1. Clone the repository
