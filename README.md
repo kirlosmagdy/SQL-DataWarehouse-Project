@@ -51,7 +51,8 @@ This project demonstrates **enterprise-grade data warehousing** practices, showc
 
 The project implements a **three-tier Medallion Architecture** for progressive data refinement:
 
-![Data Architecture](docs/images/architecture.png)
+<img width="1544" height="796" alt="data_architecture" src="https://github.com/user-attachments/assets/999df6a2-2e7f-44ed-803e-580b4aaa1f5e" />
+
 
 ### 📊 Architecture Layers
 
