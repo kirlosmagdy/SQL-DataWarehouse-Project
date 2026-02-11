@@ -1,155 +1,226 @@
-# SQL Data Warehouse Project
+# 🏢 Enterprise Data Warehouse Project
+
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?style=flat\&logo=microsoft-sql-server\&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
+[![T-SQL](https://img.shields.io/badge/T--SQL-Advanced-003B57?style=flat\&logo=database\&logoColor=white)](https://docs.microsoft.com/en-us/sql/t-sql/)
+[![Architecture](https://img.shields.io/badge/Architecture-Medallion%20\(Bronze/Silver/Gold\)-FF6F00?style=flat)]()
+[![Data Model](https://img.shields.io/badge/Data%20Model-Star%20Schema-blueviolet?style=flat)]()
+
+> A production-ready SQL Server Data Warehouse implementing the **Medallion Architecture (Bronze → Silver → Gold)** with automated ETL pipelines, data quality framework, dimensional modeling, and business-ready analytics.
+
+---
 
 ## 📌 Project Overview
 
-This project demonstrates the design and implementation of a **SQL-based Data Warehouse** built to support analytical reporting and business intelligence needs. The solution transforms raw operational data into a structured, analytics-ready format and delivers meaningful business insights through SQL queries and reports.
+This project demonstrates the end-to-end design and implementation of an **Enterprise Data Warehouse** that integrates data from multiple operational systems (CRM & ERP) and transforms raw data into analytical insights.
 
-The project covers:
+The solution follows industry best practices in:
 
-* Data warehouse design (schema modeling)
-* ETL process implementation
-* Data transformation and cleaning
-* Analytical SQL queries
-* Business-focused reporting (Customers & Products reports)
-
----
-
-## 🏗️ Architecture
-
-The data warehouse follows a **dimensional modeling approach (Star Schema)** to optimize analytical query performance and reporting clarity.
-
-### Core Components:
-
-* **Fact Table(s)** – Store measurable business events (e.g., sales transactions).
-* **Dimension Tables** – Provide descriptive context (e.g., customers, products, dates).
-
-This structure enables:
-
-* Fast aggregations
-* Simplified reporting queries
-* Clear separation between transactional and analytical workloads
+* Data Engineering
+* Dimensional Modeling (Kimball Methodology)
+* Data Quality Management
+* ETL Pipeline Design
+* Analytical Reporting
 
 ---
 
-## 🔄 ETL Process
+## 🏗 Architecture
 
-The ETL (Extract, Transform, Load) process includes:
+The warehouse follows the **Medallion Architecture pattern**, organizing data into three logical layers:
 
-1. **Extract** – Importing raw data from source systems.
-2. **Transform** – Cleaning, validating, and reshaping data.
+### 🥉 Bronze Layer – Raw Data
 
-   * Handling missing values
-   * Standardizing formats
-   * Deriving calculated columns
-3. **Load** – Inserting transformed data into fact and dimension tables.
+* Stores raw data exactly as received from source systems
+* No transformations applied
+* Full load using `BULK INSERT`
+* Preserves historical data
 
-The ETL logic ensures data consistency, integrity, and readiness for analysis.
+### 🥈 Silver Layer – Cleansed & Standardized
 
----
+* Data cleaning and validation
+* Deduplication using `ROW_NUMBER()`
+* Standardization of codes (Gender, Marital Status, Country, Product Line)
+* Date conversions and validation
+* Derived columns and enrichment logic
 
-## 📊 Exploratory Data Analysis (EDA)
+### 🥇 Gold Layer – Business-Ready Model
 
-The project includes exploratory SQL queries to:
-
-* Analyze overall sales performance
-* Identify revenue trends
-* Detect top-performing products
-* Evaluate customer purchasing behavior
-* Calculate key business KPIs
-
-These queries help validate data quality and uncover insights before formal reporting.
-
----
-
-## 📈 Reports Included
-
-### 1️⃣ Customers Report
-
-The Customers Report provides business insights such as:
-
-* Total customers
-* Customer segmentation
-* Revenue per customer
-* Top customers by revenue
-* Purchase frequency
-* Lifetime value indicators
-
-This report supports marketing strategies and customer retention decisions.
+* Star Schema design
+* Conformed dimensions
+* Fact table at order-line grain
+* Analytical views for reporting
+* SCD Type 2 handling for product dimension
 
 ---
 
-### 2️⃣ Products Report
+## 🔄 Data Sources
 
-The Products Report analyzes product performance including:
+The warehouse integrates data from two systems:
 
-* Total sales per product
-* Revenue contribution
-* Best-selling products
-* Underperforming products
-* Category-level analysis
+### CRM System
 
-This helps with inventory planning, pricing strategy, and product optimization.
+* `crm_cust_info` – Customer demographics
+* `crm_prd_info` – Product master data
+* `crm_sales_details` – Sales transactions
 
----
+### ERP System
 
-## 🛠️ Technologies Used
-
-* **SQL (T-SQL)**
-* Relational Database Management System
-* Dimensional Modeling (Star Schema)
-* Data Warehousing Concepts
+* `erp_cust_az12` – Additional customer attributes
+* `erp_loc_a101` – Customer location data
+* `erp_px_cat_g1v2` – Product category hierarchy
 
 ---
 
-## 📁 Repository Structure
+## 📊 Data Model (Star Schema)
 
-```
-SQL-DataWarehouse-Project/
-│
-├── Exploratory Data Analysis.sql
-├── Customers Report.sql
-├── Products Report.sql
-└── README.md
-```
+### Dimensions
+
+#### `gold.dim_customers`
+
+* Surrogate Key
+* Customer ID & Business Number
+* Name, Gender, Marital Status
+* Country
+* Birthdate
+* Create Date
+
+#### `gold.dim_products` (SCD Type 2)
+
+* Surrogate Key
+* Product ID & Number
+* Category & Subcategory
+* Product Line
+* Maintenance Flag
+* Cost
+* Effective Start Date
+
+### Fact Table
+
+#### `gold.fact_sales`
+
+* Order Number
+* Product Key (FK)
+* Customer Key (FK)
+* Order Date
+* Shipping Date
+* Due Date
+* Sales Amount
+* Quantity
+* Price
+
+**Grain:** One row per order line item
 
 ---
 
-## 🎯 Business Value
+## ⚙ ETL Pipeline
 
-This project demonstrates:
+Two main stored procedures power the ETL process:
 
-* Strong SQL querying skills
-* Data modeling expertise
-* Analytical thinking
-* Ability to translate business requirements into data solutions
-* End-to-end data warehouse implementation
+### `bronze.load_bronze`
+
+* Truncate & load pattern
+* `BULK INSERT` from CSV
+* Execution logging
+* TRY/CATCH error handling
+
+### `silver.load_silver`
+
+* Data cleansing & transformation
+* Deduplication logic
+* Data standardization
+* Window functions (`LEAD`, `ROW_NUMBER`)
+* Business rule enforcement
 
 ---
 
-## 🚀 How to Use
+## 🔎 Data Quality Framework
 
-1. Create the database and schema.
-2. Run ETL scripts to populate dimension and fact tables.
-3. Execute analytical and reporting SQL files.
-4. Use results for dashboards or business reporting.
+The project applies structured data quality controls:
+
+* **Completeness:** NULL handling and default values
+* **Consistency:** Standardized codes and mappings
+* **Validity:** Date validation and range checks
+* **Uniqueness:** Duplicate removal strategy
+* **Accuracy:** Sales recalculation (Quantity × Price)
 
 ---
 
-## 📌 Future Improvements
+## 📈 Analytics & Reporting
 
-* Integration with Power BI / Tableau dashboards
-* Automated ETL scheduling
-* Index optimization for performance
-* Incremental data loading
-* Data quality validation framework
+### Customer Report (`gold.report_customers`)
+
+* Customer Segmentation (VIP / Regular / New)
+* Total Sales & Orders
+* Average Order Value (AOV)
+* Customer Lifespan & Recency
+* Age Groups
+
+### Product Report (`gold.report_products`)
+
+* Product Performance Segmentation
+* Revenue by Product
+* Average Selling Price
+* Monthly Revenue Metrics
+
+### Exploratory Data Analysis
+
+* Revenue by category
+* Top/Bottom customers
+* Top/Bottom products
+* Sales distribution by country
+
+---
+
+## 🛠 Technologies Used
+
+* Microsoft SQL Server 2019+
+* T-SQL
+* SQL Server Management Studio (SSMS)
+* Medallion Architecture
+* Star Schema Modeling
+* SCD Type 2 Implementation
+
+---
+
+## 🚀 How to Run the Project
+
+1. Create Database and Schemas
+2. Run Bronze DDL scripts
+3. Execute `bronze.load_bronze`
+4. Run Silver DDL scripts
+5. Execute `silver.load_silver`
+6. Create Gold Views
+7. Query analytics views
+
+---
+
+## ⭐ Key Highlights
+
+* End-to-end Data Warehouse implementation
+* Multi-source data integration
+* Production-style ETL with logging
+* Advanced SQL techniques (CTEs, Window Functions)
+* Business-ready analytical reporting
+* Clean separation of data layers
+
+---
+
+## 🔮 Future Improvements
+
+* Incremental loading (CDC)
+* Power BI dashboards
+* Index & performance optimization
+* Partitioning strategy
+* Cloud migration (Azure / Synapse)
 
 ---
 
 ## 👨‍💻 Author
 
 **Kirolos Magdy**
-SQL Developer | Data Analyst | Data Engineering Enthusiast
+SQL Developer | Data Engineer | BI Specialist
+
+GitHub: [https://github.com/kirlosmagdy](https://github.com/kirlosmagdy)
 
 ---
 
-If you would like to collaborate or discuss the project, feel free to connect!
+> "Turning raw operational data into strategic business intelligence using modern data engineering practices."
